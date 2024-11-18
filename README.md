@@ -150,6 +150,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Whisper**: For audio transcription.
 - **NLTK**: For sentiment analysis with the VADER sentiment analysis tool.
 - **FFmpeg**: For processing audio and video files.
-```
-
 
