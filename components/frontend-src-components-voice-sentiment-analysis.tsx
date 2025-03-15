@@ -21,6 +21,12 @@ interface RecordingHistory {
   transcription: string
   sentiment: string
   confidence: number
+  Compound: number
+  Negative:number
+  Neutral : number
+  Positive : number
+  summary:string
+
 }
 
 interface SentimentAnalysis {
@@ -161,12 +167,12 @@ export function VoiceSentimentAnalysisComponent() {
             score: recording.confidence,
             polarity: 0, // Default value
             vader_scores: {
-              compound: 0,
-              neg: 0,
-              neu: 0,
-              pos: 0,
+              compound: recording.Compound,
+              neg: recording.Negative,
+              neu: recording.Neutral,
+              pos: recording.Positive,
             },
-            summary: `The sentiment is ${recording.sentiment.toLowerCase()}.`,
+            summary: recording.summary,
           })
           showStatus(`Loaded local recording from ${new Date(recording.timestamp).toLocaleString()}`)
           return
@@ -416,6 +422,13 @@ export function VoiceSentimentAnalysisComponent() {
                 transcription: data.transcription || "",
                 sentiment: data.analysis_result?.sentiment || "Unknown",
                 confidence: data.analysis_result?.score || 0,
+                Compound: data.analysis_result?.vader_scores.compound.toFixed(2) || 0,
+                Negative: data.analysis_result?.vader_scores.neg.toFixed(2) || 0,
+                Neutral: data.analysis_result?.vader_scores.neu.toFixed(2) || 0,
+                Positive: data.analysis_result?.vader_scores.pos.toFixed(2) || 0,
+                summary:data.analysis_result?.summary,
+                
+
               }
 
               // Get existing recordings
@@ -457,6 +470,7 @@ export function VoiceSentimentAnalysisComponent() {
 
   // Helper function to save to localStorage only
   const saveToLocalStorageOnly = (audioFile: File, data: any) => {
+    console.log(data)
     try {
       const newRecording = {
         id: `local_${Date.now()}`,
@@ -466,6 +480,11 @@ export function VoiceSentimentAnalysisComponent() {
         transcription: data.transcription || "",
         sentiment: data.analysis_result?.sentiment || "Unknown",
         confidence: data.analysis_result?.score || 0,
+        Compound: data.analysis_result?.vader_scores.compound.toFixed(2) || 0,
+        Negative: data.analysis_result?.vader_scores.neg.toFixed(2) || 0,
+        Neutral: data.analysis_result?.vader_scores.neu.toFixed(2) || 0,
+        Positive: data.analysis_result?.vader_scores.pos.toFixed(2) || 0,
+        summary:data.analysis_result?.summary,
       }
 
       // Get existing recordings
@@ -772,10 +791,10 @@ export function VoiceSentimentAnalysisComponent() {
                     <div className="grid grid-cols-2 gap-2 mt-1">
                       {analysis?.vader_scores && (
                         <>
-                          <div className="text-sm">Compound: {analysis.vader_scores.compound.toFixed(2)}</div>
-                          <div className="text-sm">Negative: {analysis.vader_scores.neg.toFixed(2)}</div>
-                          <div className="text-sm">Neutral: {analysis.vader_scores.neu.toFixed(2)}</div>
-                          <div className="text-sm">Positive: {analysis.vader_scores.pos.toFixed(2)}</div>
+                          <div className="text-sm">Compound: {analysis.vader_scores.compound}</div>
+                          <div className="text-sm">Negative: {analysis.vader_scores.neg}</div>
+                          <div className="text-sm">Neutral: {analysis.vader_scores.neu}</div>
+                          <div className="text-sm">Positive: {analysis.vader_scores.pos}</div>
                         </>
                       )}
                     </div>
