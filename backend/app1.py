@@ -47,7 +47,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Initialize Groq client with environment variable
-GROQ_API_KEY = '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'
+GROQ_API_KEY = os.environ('grok_api_key')
 groq_client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
 
 # Model parameters
